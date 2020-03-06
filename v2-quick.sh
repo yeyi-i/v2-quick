@@ -73,11 +73,3 @@ if [[ ${receiver_server} == 0 ]]; then
 	sudo ~/.acme.sh/acme.sh --installcert -d domainName --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
 	
 fi
-
-## debug
-if [[ $sender_server == 0 ]]; then
-	echo "sender_server=true"
-elif [[ $receiver_server == 0 ]]; then
-	echo "receiver_server=true"
-fi
-echo $1

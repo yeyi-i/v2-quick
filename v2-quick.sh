@@ -15,13 +15,7 @@ fi
 
 ## code for sender server
 
-# get IP and passwd
-if [[ ${sender_server} == 0 ]]; then
-	sender_ip=$2
-	sender_passwd=$3
-fi
-
-# get IP and passwd
+# get IP and passwd; finally copy the database file to new server via ssh
 if [[ ${sender_server} == 0 ]]; then
 	if [[ $2 == "" ]]||[[ $3 == "" ]]; then
 		echo "需要第二个参数：新服务器的IP

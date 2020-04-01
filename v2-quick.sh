@@ -1,10 +1,7 @@
 #!/bin/bash
 
-# install sshpass
-sudo apt-get update
-sudo apt-get install sshpass
-
 ## detect sender server or receive server
+
 if [[ $1 == "-s" ]]; then 
 	sender_server=0
 elif [[ $1 == "-r" ]]; then
@@ -14,6 +11,10 @@ else
 fi
 
 ## code for sender server
+
+# install sshpass
+sudo apt-get update
+sudo apt-get install sshpass
 
 # get IP and passwd; finally copy the database file to new server via ssh
 if [[ ${sender_server} == 0 ]]; then
@@ -35,6 +36,8 @@ fi
 
 if [[ ${receiver_server} == 0 ]]; then
 	
+	sudo apt-get update
+		
 	# install v2-ui
 	sudo curl -Ls https://blog.sprov.xyz/v2-ui.sh | bash
 	

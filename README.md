@@ -1,4 +1,21 @@
 # v2-quick
-Quickly re-install v2-ui and dump v2-ui.db file to the new server; including the modification A record of domain name.
+由于是个VPN重度使用者，如果阿里云服务器不每个月更换IP地址，感觉速度会被Qos，但是由于使用的TLS，更换域名之类的超级麻烦，所以就有了这个脚本，最大程度的减轻了我每个月的更换部署工作量
 
-# Thanks to https://github.com/sprov065/v2-ui
+## 使用方法：
+
+0. 需要先打开脚本编辑自己的Godaddy API 和域名等变量
+
+1. 一般先在新的服务器上运行该脚本
+> bash ./v2-quick.sh -r
+
+2. 然后脚本就会安装一堆东西，这个时候域名解析是会失败的，这个是正常的。因为虽然脚本通过Godaddy API更新了域名，但域名解析到全球还是需要时间的
+
+3. 这个时候再在旧服务器上使用脚本把v2-ui的数据库文件传输到新的服务器上，从而达到即开即用的效果~
+> 1. 这个脚本用的是sshpass，请一定确保只有你本人能连接这两台服务器，否则一个简单的history命令就能看到你新服务器的密码！！！
+> 2. bash ./v2-quick.sh -s 你的服务器IP地址 你的服务器密码
+
+4. 基本上等域名解析完后，再在新服务器上运行一遍脚本就可以了
+> bash ./v2-quick.sh -r
+
+# 感谢
+[v2-ui](https://github.com/sprov065/v2-ui)

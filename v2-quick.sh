@@ -10,12 +10,9 @@ else
 	echo "请输入参数; -s表示脚本运行在旧服务器上，-r表示脚本运行在新服务器上"
 fi
 
+domain="yeyi.space" # domain name
+
 ## code for sender server
-
-# install sshpass
-sudo apt-get update
-sudo apt-get install sshpass
-
 # get IP and passwd; finally copy the database file to new server via ssh
 if [[ ${sender_server} == 0 ]]; then
 	if [[ $2 == "" ]]||[[ $3 == "" ]]; then
@@ -24,8 +21,11 @@ if [[ ${sender_server} == 0 ]]; then
 	else
 		sender_ip=$2
 		sender_passwd=$3
+		sudo apt-get update
+		acme.sh revoke $domain --ecc # remove certificate from old server 
 		if [[ -e "/etc/v2-ui/v2-ui.db" ]]; then
-			sudo sshpass -p ${sender_passwd} -v scp -o StrictHostKeyChecking=no /etc/v2-ui/v2-ui.db ${sender_ip}:/etc/v2-ui/v2-ui.db
+			sudo apt-get install sshpass
+			sudo sshpass -p ${sender_passwd} -v scp -r -o StrictHostKeyChecking=no /etc/v2-ui ${sender_ip}:/etc/v2-ui
 		else
           		echo "/etc/v2-ui/v2-ui.db 文件不存在"
  		fi
@@ -42,11 +42,10 @@ if [[ ${receiver_server} == 0 ]]; then
 	sudo curl -Ls https://blog.sprov.xyz/v2-ui.sh | bash
 	
 	# change domain IP address
-	domain="" #your domain name
 	type_="A" 
 	key="" #godaddy api key
 	secret="" #godaddy api secret
-	name="" #the name of record
+	name="@" #the name of record
 	 
 	headers="Authorization: sso-key $key:$secret"
 	echo $headers
@@ -72,7 +71,7 @@ if [[ ${receiver_server} == 0 ]]; then
 	sudo apt-get -y install socat
 	sudo mkdir /etc/v2ray
 	sudo curl https://get.acme.sh | sh
-	sudo ~/.acme.sh/acme.sh --issue -d domainName --standalone -k ec-256
-	sudo ~/.acme.sh/acme.sh --installcert -d domainName --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
+	sudo ~/.acme.sh/acme.sh --issue -d $domain --standalone -k ec-256
+	sudo ~/.acme.sh/acme.sh --installcert -d $domain --fullchainpath /etc/v2ray/v2ray.crt --keypath /etc/v2ray/v2ray.key --ecc
 	
 fi
